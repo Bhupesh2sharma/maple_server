@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; padding: 20px; background-color: #f45201; color: white; }
+        .content { padding: 20px; }
+        .footer { text-align: center; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Booking Confirmation</h1>
+        </div>
+        <div class="content">
+            <p>Dear Customer,</p>
+            <p>Thank you for booking with Maple Leaf Tours. Your booking has been confirmed!</p>
+            
+            <h2>Booking Details:</h2>
+            <ul>
+                <li>Booking ID: {{bookingId}}</li>
+                <li>Package: {{packageTitle}}</li>
+                <li>Start Date: {{startDate}}</li>
+                <li>Number of People: {{adults}} Adults, {{children}} Children</li>
+                <li>Total Amount: ₹{{totalAmount}}</li>
+            </ul>
+
+            <p>If you have any questions, please don't hesitate to contact us.</p>
+        </div>
+        <div class="footer">
+            <p>Maple Leaf Tours<br>
+            Email: waglogy.in@gmail.com<br>
+            Phone: [Your Phone Number]</p>
+        </div>
+    </div>
+</body>
+</html>
