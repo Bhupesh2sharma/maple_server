@@ -1,13 +1,13 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 465,
   secure: true, // use SSL
   auth: {
-    user: 'waglogy.in@gmail.com',
-    pass: 'rknj gyll lhgh ecod' // Your working App Password
-  }
+    user: "travelwithmaple2023@gmail.com",
+    pass: "nnsa xbkc fecy jzgu", // Your working App Password
+  },
 });
 
 const sendBookingEmail = async (booking) => {
@@ -31,8 +31,12 @@ const sendBookingEmail = async (booking) => {
           <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
             <p><strong>Booking ID:</strong> ${booking._id}</p>
             <p><strong>Package:</strong> ${booking.package.title}</p>
-            <p><strong>Travel Date:</strong> ${new Date(booking.startDate).toLocaleDateString()}</p>
-            <p><strong>Number of Travelers:</strong> ${booking.numberOfPeople.adults} Adults, ${booking.numberOfPeople.children} Children</p>
+            <p><strong>Travel Date:</strong> ${new Date(
+              booking.startDate
+            ).toLocaleDateString()}</p>
+            <p><strong>Number of Travelers:</strong> ${
+              booking.numberOfPeople.adults
+            } Adults, ${booking.numberOfPeople.children} Children</p>
             <p><strong>Total Amount:</strong> ₹${booking.totalAmount.toLocaleString()}</p>
           </div>
           
@@ -43,7 +47,9 @@ const sendBookingEmail = async (booking) => {
           </div>
           
           <div style="text-align: center; margin-top: 20px;">
-            <a href="http://localhost:3000/booking/${booking._id}/payment" 
+            <a href="https://www.mapleleaftourstravels.com/booking/${
+              booking._id
+            }/payment" 
                style="background-color: #f45201; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block;">
               Complete Payment
             </a>
@@ -72,8 +78,12 @@ const sendBookingEmail = async (booking) => {
           <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
             <p><strong>Booking ID:</strong> ${booking._id}</p>
             <p><strong>Package:</strong> ${booking.package.title}</p>
-            <p><strong>Travel Date:</strong> ${new Date(booking.startDate).toLocaleDateString()}</p>
-            <p><strong>Number of Travelers:</strong> ${booking.numberOfPeople.adults} Adults, ${booking.numberOfPeople.children} Children</p>
+            <p><strong>Travel Date:</strong> ${new Date(
+              booking.startDate
+            ).toLocaleDateString()}</p>
+            <p><strong>Number of Travelers:</strong> ${
+              booking.numberOfPeople.adults
+            } Adults, ${booking.numberOfPeople.children} Children</p>
             <p><strong>Total Amount:</strong> ₹${booking.totalAmount.toLocaleString()}</p>
           </div>
 
@@ -84,12 +94,16 @@ const sendBookingEmail = async (booking) => {
                 <td style="padding: 8px 0;"><strong>Primary Phone:</strong></td>
                 <td style="padding: 8px 0;">${booking.contactDetails.phone}</td>
               </tr>
-              ${booking.contactDetails.alternatePhone ? `
+              ${
+                booking.contactDetails.alternatePhone
+                  ? `
                 <tr>
                   <td style="padding: 8px 0;"><strong>Alternate Phone:</strong></td>
                   <td style="padding: 8px 0;">${booking.contactDetails.alternatePhone}</td>
                 </tr>
-              ` : ''}
+              `
+                  : ""
+              }
               <tr>
                 <td style="padding: 8px 0;"><strong>Email:</strong></td>
                 <td style="padding: 8px 0;">${booking.contactDetails.email}</td>
@@ -97,15 +111,19 @@ const sendBookingEmail = async (booking) => {
             </table>
           </div>
 
-          ${booking.specialRequirements ? `
+          ${
+            booking.specialRequirements
+              ? `
             <div style="background-color: #fff3e0; padding: 15px; border-radius: 5px; margin: 15px 0;">
               <h3 style="color: #333; margin-top: 0;">Special Requirements</h3>
               <p style="margin: 0;">${booking.specialRequirements}</p>
             </div>
-          ` : ''}
+          `
+              : ""
+          }
 
           <div style="text-align: center; margin-top: 20px;">
-            <a href="http://localhost:3000/admin/bookings" 
+            <a href="https://maple-admin-ncu7-git-main-techbhupesh-gmailcoms-projects.vercel.app/admin/bookings" 
                style="background-color: #f45201; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block;">
               View in Admin Panel
             </a>
@@ -121,19 +139,19 @@ const sendBookingEmail = async (booking) => {
     // Send email to customer
     console.log('Sending email to customer:', booking.contactDetails.email);
     const customerInfo = await transporter.sendMail({
-      from: '"Maple Tours" <waglogy.in@gmail.com>',
+      from: '"Maple Tours" <travelwithmaple2023@gmail.com>',
       to: booking.contactDetails.email,
-      subject: 'Complete Your Booking Payment - Maple Tours and Travels',
-      html: customerEmailTemplate
+      subject: "Complete Your Booking Payment - Maple Tours and Travels",
+      html: customerEmailTemplate,
     });
     console.log('Customer email sent successfully:', customerInfo.messageId);
 
     // Send email to admin with updated template
     const adminInfo = await transporter.sendMail({
-      from: '"Maple Tours System" <waglogy.in@gmail.com>',
-      to: 'bhupesh.waglogy@gmail.com',
+      from: '"Maple Tours System" <travelwithmaple2023@gmail.com>',
+      to: "travelwithmaple2023@gmail.com",
       subject: `New Booking Alert - ${booking.package.title}`,
-      html: adminEmailTemplate
+      html: adminEmailTemplate,
     });
     console.log('Admin email sent successfully:', adminInfo.messageId);
 
@@ -149,10 +167,10 @@ const sendBookingEmail = async (booking) => {
 const testEmail = async (toEmail) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Maple Tours" <waglogy.in@gmail.com>',
+      from: '"Maple Tours" <travelwithmaple2023@gmail.com>',
       to: toEmail,
       subject: "Test Email",
-      text: "This is a test email from Maple Tours"
+      text: "This is a test email from Maple Tours",
     });
     console.log('Test email sent:', info.messageId);
     return true;
@@ -184,15 +202,21 @@ const sendPaymentConfirmationEmail = async (booking) => {
             <h3 style="color: #333; margin-top: 0;">Booking Details:</h3>
             <p><strong>Booking ID:</strong> ${booking._id}</p>
             <p><strong>Package:</strong> ${booking.package.title}</p>
-            <p><strong>Travel Date:</strong> ${new Date(booking.startDate).toLocaleDateString()}</p>
-            <p><strong>Number of Travelers:</strong> ${booking.numberOfPeople.adults} Adults, ${booking.numberOfPeople.children} Children</p>
+            <p><strong>Travel Date:</strong> ${new Date(
+              booking.startDate
+            ).toLocaleDateString()}</p>
+            <p><strong>Number of Travelers:</strong> ${
+              booking.numberOfPeople.adults
+            } Adults, ${booking.numberOfPeople.children} Children</p>
             <p><strong>Total Amount Paid:</strong> ₹${booking.totalAmount.toLocaleString()}</p>
           </div>
 
           <div style="background-color: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0;">
             <h3 style="color: #2e7d32; margin-top: 0;">Payment Details:</h3>
             <p><strong>Payment Status:</strong> Completed</p>
-            <p><strong>Payment ID:</strong> ${booking.paymentDetails.razorpayPaymentId}</p>
+            <p><strong>Payment ID:</strong> ${
+              booking.paymentDetails.razorpayPaymentId
+            }</p>
             <p><strong>Transaction Date:</strong> ${new Date().toLocaleString()}</p>
           </div>
 
@@ -208,8 +232,8 @@ const sendPaymentConfirmationEmail = async (booking) => {
           <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 15px 0;">
             <h3 style="color: #333; margin-top: 0;">Need Help?</h3>
             <p>If you have any questions or need assistance, please contact us:</p>
-            <p>📞 Phone: +91 XXXXXXXXXX</p>
-            <p>📧 Email: support@mapletours.com</p>
+            <p>📞 Phone: +91 7001895132</p>
+            <p>📧 Email: travelwithmaple2023@gmail.com</p>
           </div>
         </div>
       </div>
@@ -230,7 +254,9 @@ const sendPaymentConfirmationEmail = async (booking) => {
             <p><strong>Booking ID:</strong> ${booking._id}</p>
             <p><strong>Package:</strong> ${booking.package.title}</p>
             <p><strong>Amount Received:</strong> ₹${booking.totalAmount.toLocaleString()}</p>
-            <p><strong>Payment ID:</strong> ${booking.paymentDetails.razorpayPaymentId}</p>
+            <p><strong>Payment ID:</strong> ${
+              booking.paymentDetails.razorpayPaymentId
+            }</p>
             <p><strong>Transaction Date:</strong> ${new Date().toLocaleString()}</p>
           </div>
 
@@ -238,12 +264,17 @@ const sendPaymentConfirmationEmail = async (booking) => {
             <h3 style="color: #333; margin-top: 0;">Customer Details:</h3>
             <p><strong>Phone:</strong> ${booking.contactDetails.phone}</p>
             <p><strong>Email:</strong> ${booking.contactDetails.email}</p>
-            ${booking.contactDetails.alternatePhone ? 
-              `<p><strong>Alternate Phone:</strong> ${booking.contactDetails.alternatePhone}</p>` : ''}
+            ${
+              booking.contactDetails.alternatePhone
+                ? `<p><strong>Alternate Phone:</strong> ${booking.contactDetails.alternatePhone}</p>`
+                : ""
+            }
           </div>
 
           <div style="text-align: center; margin-top: 20px;">
-            <a href="http://localhost:3000/admin/bookings/${booking._id}" 
+            <a href="https://maple-admin-ncu7-git-main-techbhupesh-gmailcoms-projects.vercel.app/admin/bookings/${
+              booking._id
+            }" 
                style="background-color: #f45201; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block;">
               View Booking Details
             </a>
@@ -254,19 +285,19 @@ const sendPaymentConfirmationEmail = async (booking) => {
 
     // Send payment confirmation to customer
     const customerInfo = await transporter.sendMail({
-      from: '"Maple Tours" <waglogy.in@gmail.com>',
+      from: '"Maple Tours" <travelwithmaple2023@gmail.com>',
       to: booking.contactDetails.email,
-      subject: 'Payment Confirmed - Your Booking is Confirmed! - Maple Tours',
-      html: customerPaymentTemplate
+      subject: "Payment Confirmed - Your Booking is Confirmed! - Maple Tours",
+      html: customerPaymentTemplate,
     });
     console.log('Customer payment confirmation email sent:', customerInfo.messageId);
 
     // Send payment notification to admin
     const adminInfo = await transporter.sendMail({
-      from: '"Maple Tours System" <waglogy.in@gmail.com>',
-      to: 'bhupesh.waglogy@gmail.com',
+      from: '"Maple Tours System" < travelwithmaple2023@gmail.com>',
+      to: " travelwithmaple2023@gmail.com",
       subject: `Payment Received - Booking ${booking._id}`,
-      html: adminPaymentTemplate
+      html: adminPaymentTemplate,
     });
     console.log('Admin payment notification email sent:', adminInfo.messageId);
 
