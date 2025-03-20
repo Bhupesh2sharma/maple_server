@@ -21,7 +21,7 @@ const app = express();
 
 // Enhanced CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3001', 'http://localhost:3002', 'https://maple-t-t.vercel.app','https://maple-admin-ncu7-git-main-techbhupesh-gmailcoms-projects.vercel.app'],
+  origin: ['http://localhost:3000', 'https://www.mapleleaftourstravels.com','https://maple-admin-ncu7-git-main-techbhupesh-gmailcoms-projects.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
