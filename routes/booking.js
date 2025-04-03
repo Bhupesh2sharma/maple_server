@@ -197,7 +197,25 @@ router.post('/:bookingId/payment', protect, async (req, res) => {
 });
 
 // ... rest of the routes ...
+router.get("/my-bookings", protect, async (req, res) => {
+  try {
+    const bookings = await Booking.find({ user: req.user._id })
+      .populate("package", "title duration price images")
+      .sort("-createdAt");
 
+    res.status(200).json({
+      success: true,
+      count: bookings.length,
+      data: bookings,
+    });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching bookings",
+    });
+  }
+});
 // Add route to update booking status
 router.patch('/:bookingId/status', protect, async (req, res) => {
     try {
@@ -308,25 +326,7 @@ router.get('/availability/:packageId', async (req, res) => {
     }
   });
 // Get all bookings for a user
-router.get('/my-bookings', protect, async (req, res) => {
-  try {
-    const bookings = await Booking.find({ user: req.user._id })
-      .populate('package', 'title duration price images')
-      .sort('-createdAt');
 
-    res.status(200).json({
-      success: true,
-      count: bookings.length,
-      data: bookings
-    });
-  } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching bookings'
-    });
-  }
-});
 
 // Get single booking
 router.get('/:id', protect, async (req, res) => {
