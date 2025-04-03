@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { protect, authorize } = require('../middleware/auth'); // Add authorize import
+const { protect } = require('../middleware/auth');
 
 // Admin Login route
 router.post('/admin/login', async (req, res) => {
@@ -84,89 +84,39 @@ router.post('/admin/login', async (req, res) => {
 });
 
 // User Registration route
-router.post('/register', async (req, res) => {
+// Register user
+router.post("/register", async (req, res) => {
   try {
-    const { firstName, lastName, email, password, age, state, country, pinCode, address, profession, gender, mobileNo } = req.body;
+    const { firstName, lastName, email, password, country, state, address, pin, profession, phone } = req.body;
 
-    // Validate required fields
-    if (!firstName || !lastName || !email || !password || !state || !country || !pinCode || !address || !profession || !gender || !mobileNo) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide all required fields'
-      });
-    }
+    // Optionally add validation for new fields
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email already registered'
-      });
-    }
-
-    // Create new user
     const user = await User.create({
       firstName,
       lastName,
       email,
       password,
-      age,
-      state,
       country,
-      pinCode,
+      state,
       address,
+      pin,
       profession,
-      gender,
-      mobileNo,
-      role: 'user' // Default role
-    });
-
-    // Create token
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    // Remove password from response
-    user.password = undefined;
-
-    // Set cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      phone
     });
 
     res.status(201).json({
       success: true,
-      token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        state: user.state,
-        country: user.country,
-        pinCode: user.pinCode,
-        address: user.address,
-        profession: user.profession,
-        gender: user.gender,
-        mobileNo: user.mobileNo,
-        role: user.role
-      }
+      data: user
     });
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error("Error registering user:", error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Registration failed'
+      message: "Error registering user"
     });
   }
 });
+
 
 // User Login route
 router.post('/login', async (req, res) => {
@@ -261,7 +211,7 @@ router.get('/logout', protect, (req, res) => {
 });
 
 // Get current logged-in user
-router.get('/me', protect, authorize("user"), async (req, res) => {
+router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.status(200).json({
@@ -316,34 +266,4 @@ router.put('/updatepassword', protect, async (req, res) => {
   }
 });
 
-// Fetch user profile
-router.get('/profile', protect, authorize("user"), async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching user profile'
-    });
-  }
-});
 module.exports = router;
