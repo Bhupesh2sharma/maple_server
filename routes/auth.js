@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth'); // Add authorize import
 
 // Admin Login route
 router.post('/admin/login', async (req, res) => {
@@ -86,10 +86,10 @@ router.post('/admin/login', async (req, res) => {
 // User Registration route
 router.post('/register', async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, age, state, country, pinCode, address, profession, gender, mobileNo } = req.body;
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !state || !country || !pinCode || !address || !profession || !gender || !mobileNo) {
       return res.status(400).json({
         success: false,
         message: 'Please provide all required fields'
@@ -111,6 +111,14 @@ router.post('/register', async (req, res) => {
       lastName,
       email,
       password,
+      age,
+      state,
+      country,
+      pinCode,
+      address,
+      profession,
+      gender,
+      mobileNo,
       role: 'user' // Default role
     });
 
@@ -140,6 +148,14 @@ router.post('/register', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        age: user.age,
+        state: user.state,
+        country: user.country,
+        pinCode: user.pinCode,
+        address: user.address,
+        profession: user.profession,
+        gender: user.gender,
+        mobileNo: user.mobileNo,
         role: user.role
       }
     });
@@ -245,7 +261,7 @@ router.get('/logout', protect, (req, res) => {
 });
 
 // Get current logged-in user
-router.get('/me', protect, async (req, res) => {
+router.get('/me', protect, authorize("user"), async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.status(200).json({
@@ -300,4 +316,34 @@ router.put('/updatepassword', protect, async (req, res) => {
   }
 });
 
+// Fetch user profile
+router.get('/profile', protect, authorize("user"), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching user profile'
+    });
+  }
+});
 module.exports = router;

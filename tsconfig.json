@@ -1,4 +1,6 @@
 {
+  "include": ["**/*"],
+  "exclude": [],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

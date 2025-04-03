@@ -33,6 +33,40 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  age: {
+    type: Number,
+    min: 0
+  },
+  state: {
+    type: String,
+    required: [true, 'Please add a state']
+  },
+  country: {
+    type: String,
+    required: [true, 'Please add a country']
+  },
+  pinCode: {
+    type: String,
+    required: [true, 'Please add a pin code']
+  },
+  address: {
+    type: String,
+    required: [true, 'Please add an address']
+  },
+  profession: {
+    type: String,
+    required: [true, 'Please add a profession']
+  },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other'],
+    required: [true, 'Please specify gender']
+  },
+  mobileNo: {
+    type: String,
+    required: [true, 'Please add a mobile number'],
+    match: [/^\d{10}$/, 'Please add a valid mobile number']
   }
 });
 
