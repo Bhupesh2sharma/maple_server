@@ -4,71 +4,56 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, 'Please add a first name']
+    required: [true, "Please add a first name"],
   },
   lastName: {
     type: String,
-    required: [true, 'Please add a last name']
+    required: [true, "Please add a last name"],
   },
   email: {
     type: String,
-    required: [true, 'Please add an email'],
+    required: [true, "Please add an email"],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email'
-    ]
+      "Please add a valid email",
+    ],
   },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: [true, "Please add a password"],
     minlength: 6,
-    select: false
+    select: false,
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  age: {
-    type: Number,
-    min: 0
-  },
-  state: {
-    type: String,
-    required: [true, 'Please add a state']
+    enum: ["user", "admin"],
+    default: "user",
   },
   country: {
     type: String,
-    required: [true, 'Please add a country']
   },
-  pinCode: {
+  state: {
     type: String,
-    required: [true, 'Please add a pin code']
   },
   address: {
     type: String,
-    required: [true, 'Please add an address']
+  },
+  pin: {
+    type: String,
   },
   profession: {
     type: String,
-    required: [true, 'Please add a profession']
   },
-  gender: {
+  phone: {
     type: String,
-    enum: ['male', 'female', 'other'],
-    required: [true, 'Please specify gender']
   },
-  mobileNo: {
-    type: String,
-    required: [true, 'Please add a mobile number'],
-    match: [/^\d{10}$/, 'Please add a valid mobile number']
-  }
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
+
 
 // Encrypt password using bcrypt
 userSchema.pre('save', async function(next) {
