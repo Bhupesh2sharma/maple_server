@@ -7,7 +7,7 @@ const Package = require("../models/Package");
 const Razorpay = require("razorpay");
 const { sendBookingEmail } = require("../utils/emailService");
 // Create new booking
-router.post("/", protect, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       package: packageId,
@@ -205,8 +205,6 @@ router.post("/", protect, async (req, res) => {
     });
   }
 });
-
-// ... rest of the routes ...
 
 // Add route to update booking status
 router.patch("/:bookingId/status", protect, async (req, res) => {
@@ -425,33 +423,23 @@ router.put("/:id/cancel", protect, async (req, res) => {
     });
   }
 });
-
-// Admin route: Get all bookings
+// Modified package route (remove admin check)
 router.get("/", protect, async (req, res) => {
   try {
-    // Check if user is admin
-    if (req.user.role !== "admin") {
-      return res.status(403).json({
-        success: false,
-        message: "Not authorized to access this route",
-      });
-    }
-
-    const bookings = await Booking.find()
-      .populate("package", "title duration price")
-      .populate("user", "firstName lastName email")
-      .sort("-createdAt");
+    const packages = await Package.find({ active: true })
+      .sort("-createdAt")
+      .select("title duration price images destination"); // Remove populate
 
     res.status(200).json({
       success: true,
-      count: bookings.length,
-      data: bookings,
+      count: packages.length,
+      data: packages
     });
   } catch (error) {
-    console.error("Error fetching all bookings:", error);
+    console.error("Error fetching packages:", error);
     res.status(500).json({
       success: false,
-      message: "Error fetching bookings",
+      message: "Error fetching packages"
     });
   }
 });
