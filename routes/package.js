@@ -428,7 +428,7 @@ router.get("/", async (req, res) => {
   try {
     const packages = await Package.find({ active: true })
       .sort("-createdAt")
-      .select("title duration price images destination");
+      .select("-__v"); // Remove specific field selection
 
     res.status(200).json({
       success: true,
