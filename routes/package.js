@@ -423,12 +423,12 @@ router.put("/:id/cancel", protect, async (req, res) => {
     });
   }
 });
-// Modified package route (remove admin check)
-router.get("/", protect, async (req, res) => {
+// Modified package route (remove protect middleware)
+router.get("/", async (req, res) => {
   try {
     const packages = await Package.find({ active: true })
       .sort("-createdAt")
-      .select("title duration price images destination"); // Remove populate
+      .select("title duration price images destination");
 
     res.status(200).json({
       success: true,
